@@ -95,7 +95,7 @@ ht.Size()                      // 1
 hash := utils.FNVHash("Hello")  // 4116459851
 ```
 
-## Running
+## Ejecutar
 
 ```bash
 # Ejecuta el archivo main
