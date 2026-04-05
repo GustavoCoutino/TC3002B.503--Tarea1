@@ -1,12 +1,3 @@
-.PHONY: test
-test:
-	@echo "Running tests..."
-	@go test ./... -count=1
-
-.PHONY: run
-run:
-	go run ./...
-
 .PHONY: tidy
 tidy:
 	@echo 'Tidying module dependencies...'
@@ -16,3 +7,12 @@ tidy:
 	go mod vendor
 	@echo 'Formatting .go files...'
 	go fmt ./...
+
+.PHONY: run
+run:
+	go run ./...
+
+.PHONY: test
+test:
+	@echo "Running tests..."
+	@go test ./... -count=1

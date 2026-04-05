@@ -60,7 +60,7 @@ func main() {
 
 	// Hashmap
 	fmt.Println("Hashmap")
-	ht := hashmap.New[int](5, utils.FNVHash)
+	ht := hashmap.New[string, int](5, utils.FNVHash)
 	ht.Insert("Hello", 1)
 	ht.Insert("Goodbye", 2)
 	ht.Insert("Bonjour", 3)

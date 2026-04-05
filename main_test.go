@@ -72,7 +72,7 @@ func TestMain_QueueBack(t *testing.T) {
 }
 
 func TestMain_HashmapGetInsertRemove(t *testing.T) {
-	ht := hashmap.New[int](5, utils.FNVHash)
+	ht := hashmap.New[string, int](5, utils.FNVHash)
 	ht.Insert("Hello", 1)
 	ht.Insert("Goodbye", 2)
 	ht.Insert("Bonjour", 3)
