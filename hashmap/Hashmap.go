@@ -17,7 +17,7 @@ type HashMap[K comparable, V any] struct {
 	HashFunc   func(K) uint32
 }
 
-func (hm *HashMap[K, V]) Hash(key K) uint32 {
+func (hm *HashMap[K, V]) _hash(key K) uint32 {
 	return hm.HashFunc(key) % uint32(hm.BucketSize)
 }
 
@@ -32,7 +32,7 @@ func New[K comparable, V any](BucketSize int, HashFunc func(K) uint32) *HashMap[
 
 func (hm *HashMap[K, V]) Get(key K) (K, V, error) {
 	if hm.BucketSize > 0 {
-		index := hm.Hash(key)
+		index := hm._hash(key)
 		bucket := hm.Bucket[index]
 		for _, kv := range bucket {
 			if kv.Key == key {
@@ -56,12 +56,12 @@ func (hm *HashMap[K, V]) Insert(key K, value V) error {
 		hm.Bucket = make([][]KeyVal[K, V], hm.BucketSize)
 		for _, i := range tempBucket {
 			for _, j := range i {
-				hash := hm.Hash(j.Key)
+				hash := hm._hash(j.Key)
 				hm.Bucket[hash] = append(hm.Bucket[hash], KeyVal[K, V]{Key: j.Key, Value: j.Value})
 			}
 		}
 	}
-	index := hm.Hash(key)
+	index := hm._hash(key)
 	bucket := hm.Bucket[index]
 	for i, kv := range bucket {
 		if kv.Key == key {
@@ -75,7 +75,7 @@ func (hm *HashMap[K, V]) Insert(key K, value V) error {
 }
 
 func (hm *HashMap[K, V]) Remove(key K) error {
-	index := hm.Hash(key)
+	index := hm._hash(key)
 	bucket := hm.Bucket[index]
 	if len(bucket) > 0 {
 		for i, kv := range bucket {

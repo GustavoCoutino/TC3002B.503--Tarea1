@@ -112,6 +112,45 @@ func TestHashmap_Insert(t *testing.T) {
 		assertCorrectValue(t, v, wantedValue)
 		assertCorrectValue(t, hm.Size(), wantedLength)
 	})
+
+	t.Run("insert hashmap item in hashmap with integers as keys", func(t *testing.T) {
+		hm := New[int, string](5, utils.FNVHash)
+		err := hm.Insert(1, "Washington")
+		err = hm.Insert(2, "San Francisco")
+		err = hm.Insert(3, "Menlo Park")
+		err = hm.Insert(4, "Cupertino")
+		err = hm.Insert(5, "Los Gatos")
+		err = hm.Insert(6, "San Jose")
+		k, v, err := hm.Get(3)
+		if err != nil {
+			t.Error("expected nil, got error")
+		}
+		wantedKey := 3
+		wantedValue := "Menlo Park"
+		wantedLength := 6
+
+		assertCorrectValue(t, k, wantedKey)
+		assertCorrectValue(t, v, wantedValue)
+		assertCorrectValue(t, hm.Size(), wantedLength)
+	})
+
+	t.Run("insert hashmap item in hashmap with booleans as keys", func(t *testing.T) {
+		hm := New[bool, string](5, utils.FNVHash)
+		err := hm.Insert(true, "Washington")
+		err = hm.Insert(false, "San Francisco")
+		err = hm.Insert(true, "Menlo Park")
+		k, v, err := hm.Get(true)
+		if err != nil {
+			t.Error("expected nil, got error")
+		}
+		wantedKey := true
+		wantedValue := "Menlo Park"
+		wantedLength := 2
+
+		assertCorrectValue(t, k, wantedKey)
+		assertCorrectValue(t, v, wantedValue)
+		assertCorrectValue(t, hm.Size(), wantedLength)
+	})
 }
 
 func TestHashmap_Remove(t *testing.T) {
