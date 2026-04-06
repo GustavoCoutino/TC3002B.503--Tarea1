@@ -5,6 +5,8 @@ import (
 	"slices"
 )
 
+var defaultLoadFactor = 0.75
+
 type KeyVal[K any, V any] struct {
 	Key   K
 	Value V
@@ -14,6 +16,7 @@ type HashMap[K comparable, V any] struct {
 	BucketSize int
 	FilledSize int
 	Bucket     [][]KeyVal[K, V]
+	LoadFactor int
 	HashFunc   func(K) uint32
 }
 
@@ -22,10 +25,12 @@ func (hm *HashMap[K, V]) _hash(key K) uint32 {
 }
 
 func New[K comparable, V any](BucketSize int, HashFunc func(K) uint32) *HashMap[K, V] {
+	roundedLoadFactor := int(defaultLoadFactor*float64(BucketSize))
 	return &HashMap[K, V]{
 		BucketSize: BucketSize,
-		Bucket:     make([][]KeyVal[K, V], BucketSize),
 		FilledSize: 0,
+		Bucket:     make([][]KeyVal[K, V], BucketSize),
+		LoadFactor: roundedLoadFactor,
 		HashFunc:   HashFunc,
 	}
 }
@@ -50,7 +55,9 @@ func (hm *HashMap[K, V]) Insert(key K, value V) error {
 		return errors.New("bucket size is 0")
 	}
 
-	if hm.FilledSize == hm.BucketSize {
+	load := hm.FilledSize * 100 / hm.BucketSize
+
+	if load >= hm.LoadFactor {
 		hm.BucketSize = hm.BucketSize * 2
 		tempBucket := hm.Bucket
 		hm.Bucket = make([][]KeyVal[K, V], hm.BucketSize)
