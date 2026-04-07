@@ -5,7 +5,6 @@ import (
 	"gustavocoutino/hashmap"
 	"gustavocoutino/queue"
 	"gustavocoutino/stack"
-	"gustavocoutino/utils"
 )
 
 func main() {
@@ -60,7 +59,7 @@ func main() {
 
 	// Hashmap
 	fmt.Println("Hashmap")
-	ht := hashmap.New[string, int](5, utils.FNVHash)
+	ht := hashmap.New[string, int](5)
 	ht.Insert("Hello", 1)
 	ht.Insert("Goodbye", 2)
 	ht.Insert("Bonjour", 3)

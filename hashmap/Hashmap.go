@@ -3,6 +3,8 @@ package hashmap
 import (
 	"errors"
 	"slices"
+
+	"gustavocoutino/utils"
 )
 
 var defaultLoadFactor = 0.75
@@ -21,17 +23,17 @@ type HashMap[K comparable, V any] struct {
 }
 
 func (hm *HashMap[K, V]) _hash(key K) uint32 {
-	return hm.HashFunc(key) % uint32(hm.BucketSize)
+	hashedKey := utils.FNVHash(key)
+	return hashedKey % uint32(hm.BucketSize)
 }
 
-func New[K comparable, V any](BucketSize int, HashFunc func(K) uint32) *HashMap[K, V] {
-	roundedLoadFactor := int(defaultLoadFactor*float64(BucketSize))
+func New[K comparable, V any](BucketSize int) *HashMap[K, V] {
+	roundedLoadFactor := int(defaultLoadFactor*100)
 	return &HashMap[K, V]{
 		BucketSize: BucketSize,
 		FilledSize: 0,
 		Bucket:     make([][]KeyVal[K, V], BucketSize),
 		LoadFactor: roundedLoadFactor,
-		HashFunc:   HashFunc,
 	}
 }
 

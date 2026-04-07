@@ -4,7 +4,6 @@ import (
 	"gustavocoutino/hashmap"
 	"gustavocoutino/queue"
 	"gustavocoutino/stack"
-	"gustavocoutino/utils"
 	"testing"
 )
 
@@ -72,7 +71,7 @@ func TestMain_QueueBack(t *testing.T) {
 }
 
 func TestMain_HashmapGetInsertRemove(t *testing.T) {
-	ht := hashmap.New[string, int](5, utils.FNVHash)
+	ht := hashmap.New[string, int](5)
 	ht.Insert("Hello", 1)
 	ht.Insert("Goodbye", 2)
 	ht.Insert("Bonjour", 3)
